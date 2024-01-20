@@ -9,8 +9,9 @@
 
   tasks:
     - name: Install packages
-      apt: name: "{{ item }}"
-      state: latest 
+      apt: 
+        name: "{{ item }}"
+        state: latest 
       loop: 
         - wget
         - build-essential
@@ -33,6 +34,7 @@
         - gettext
         - unzip
         - rsyslog
+      tags: [ 'setup' ]
         
     - name: Configure rsyslog server
       template:
