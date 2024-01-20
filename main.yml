@@ -1,5 +1,5 @@
 ---
-# This file just define default values for create or use MySQL user & database for this training.
+# Om te vervangen met roles/mysql/defaults/main.yaml
 
 mysql_database: td_wordpress
 mysql_user: td_wordpress
