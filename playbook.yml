@@ -154,25 +154,25 @@
         - 'rsyslog'
       tags: [ 'setup' ]
 
-   - name: configure NRPE
-     template:
-      src: nrpe.cfg.j2
-      dest: /etc/nagios/nrpe.cfg
+    - name: configure NRPE
+      template:
+        src: nrpe.cfg.j2
+        dest: /etc/nagios/nrpe.cfg
       
-   - name: Configure rsyslog client
-     template:
-       src: rsyslog_client.conf.j2
-       dest: /etc/rsyslog.conf
+    - name: Configure rsyslog client
+      template:
+        src: rsyslog_client.conf.j2
+        dest: /etc/rsyslog.conf
        
-   - name: Restart Nagios nrpe
-     service:
-       name: nagios-nrpe-server
-       state: restarted
+    - name: Restart Nagios nrpe
+      service:
+        name: nagios-nrpe-server
+        state: restarted
        
-   - name: Restart Rsyslog client
-     service:
-       name: rsyslog
-       state: restarted
+    - name: Restart Rsyslog client
+      service:
+        name: rsyslog
+        state: restarted
 
 - name: Configure WordPress server
   hosts: 10.12.0.10
