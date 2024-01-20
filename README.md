@@ -2,8 +2,9 @@ Linux week 5 eindopdracht
 
 Plaats de twee repositories in Ubuntu
 
-` git clone https://github.com/wildfoxcz/Ansible-WordPress-installation.git
-git clone https://github.com/MaxKostermk/linux-week5-ansible.git`
+` git clone https://github.com/wildfoxcz/Ansible-WordPress-installation.git`
+
+`git clone https://github.com/MaxKostermk/linux-week5-ansible.git`
 
 Verplaats dan de roles map
 
