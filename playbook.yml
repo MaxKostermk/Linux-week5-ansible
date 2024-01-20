@@ -196,7 +196,7 @@
           3462623639316530340a306266313265356230383961346130323066663662343662363138343161
           3132
 # use --ask-vault-pass because of this
-  
+  tasks:
     - name: Install packages
       apt: 
         name: "{{ item }}"
