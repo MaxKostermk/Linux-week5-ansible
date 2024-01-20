@@ -245,9 +245,6 @@
       template:
         src: apache_hardening.conf.j2
         dest: /etc/apache2/httpd.conf
-       
-    - name: Enable Apache hardening configuration
-      shell: a2enconf hardening 
      
     - name: Restart Apache
       service:
