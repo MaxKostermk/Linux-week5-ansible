@@ -53,16 +53,18 @@
 
 
     - name: Configure Nagios
-      shell: "mkdir -p /usr/local/nagios/etc/servers"
-      shell: "cd /tmp/nagios-4.4.6 && ./configure --with-httpd-conf=/etc/apache2/sites-available"
-      shell: "cd /tmp/nagioscore-nagios-4.4.14/"
-      shell: "sudo ./configure --with-httpd-conf=/etc/apache2/sites-enabled"
-      shell: "make all"
-      shell: "make install-groups-users"
-      shell: "usermod -a -G nagios www-data"
-      shell: "make install install-daemoninit install-commandmode install-config install-webconf"
-      shell: "a2enmod rewrite"
-      shell: "a2enmod cgi"
+      shell: |
+         mkdir -p /usr/local/nagios/etc/servers
+         touch /usr/local/nagios/etc/servers/client.cfg
+         cd /tmp/nagios-4.4.6 && ./configure --with-httpd-conf=/etc/apache2/sites-available
+         cd /tmp/nagioscore-nagios-4.4.14/
+         sudo ./configure --with-httpd-conf=/etc/apache2/sites-enabled
+         make all
+         make install-groups-users
+         usermod -a -G nagios www-data
+         make install install-daemoninit install-commandmode install-config install-webconf
+         a2enmod rewrite
+         a2enmod cgi
       
     - name: Add new server to nagios configuration
       blockinfile:
