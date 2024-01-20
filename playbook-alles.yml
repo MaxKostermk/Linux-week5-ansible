@@ -257,10 +257,7 @@
         state: present
         
     - name: Install Docker Python library
-      pip:
-        name: docker
-        executable: /usr/bin/python3 -m pip
-        state: present
+      shell: "/usr/bin/python3 -m pip install docker"
         
     - name: Add Docker GPG key
       apt_key:
