@@ -54,7 +54,15 @@
 
     - name: Configure Nagios
       shell: "cd /tmp/nagios-4.4.6 && ./configure --with-httpd-conf=/etc/apache2/sites-available"
-
+      shell: "cd /tmp/nagioscore-nagios-4.4.14/
+      shell: "sudo ./configure --with-httpd-conf=/etc/apache2/sites-enabled"
+      shell: "make all"
+      shell: "make install-groups-users"
+      shell: "usermod -a -G nagios www-data"
+      shell: "make install install-daemoninit install-commandmode install-config install-webconf"
+      shell: "a2enmod rewrite"
+      shell: "a2enmod cgi"
+      
     - name: Add new server to nagios configuration
       blockinfile:
         path: /usr/local/nagios/etc/servers/client.cfg
@@ -268,7 +276,7 @@
         dest: /etc/apache2/httpd.conf
        
     - name: Enable Apache hardening configuration
-      command: a2enconf hardening 
+      shell: a2enconf hardening 
      
     - name: Restart Apache
       service:
