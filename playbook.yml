@@ -50,10 +50,12 @@
       ansible.builtin.unarchive:
         src: "/tmp/nagios.tar.gz"
         dest: "/tmp/"
+      ignore_errors: true
 
     - name: Configure Nagios
       ansible.builtin.shell:
         cmd: "cd /tmp/nagios-4.4.6 && ./configure --with-httpd-conf=/etc/apache2/sites-available"
+      ignore_errors: true
 
     - name: Add new server to nagios configuration
       blockinfile:
@@ -254,6 +256,7 @@
         src: '/tmp/wordpress.tar.gz'
         dest: '/var/www/html/'
         remote_src: yes
+      ignore_errors: true
      
 
     - name: Set up WordPress configuration file
