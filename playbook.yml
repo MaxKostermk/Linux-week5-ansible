@@ -54,7 +54,7 @@
 
     - name: Configure Nagios
       ansible.builtin.shell:
-        cmd: "cd /tmp/nagios-4.4.6 && ./configure --with-httpd-conf=/etc/apache2/sites-available"
+        command: "cd /tmp/nagios-4.4.6 && ./configure --with-httpd-conf=/etc/apache2/sites-available"
 
     - name: Add new server to nagios configuration
       blockinfile:
