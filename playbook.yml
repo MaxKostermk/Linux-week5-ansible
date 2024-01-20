@@ -230,7 +230,8 @@
         - unzip
         - python3-pip
         - libmysqlclient-dev 
-        - build-essential libssl-dev
+        - build-essential 
+        - libssl-dev
         - libffi-dev 
         - python3-dev
       tags: [ 'setup' ]
