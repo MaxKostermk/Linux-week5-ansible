@@ -249,13 +249,19 @@
         - ca-certificates
         - curl
         - software-properties-common
-        - python3-pip
       tags: [ 'setup' ]
-      
+
+    - name: Install pip
+      apt:
+        name: python3-pip
+        state: present
+        
     - name: Install Docker Python library
       pip:
         name: docker
         executable: /usr/bin/python3  
+        state: present
+        
     - name: Add Docker GPG key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
