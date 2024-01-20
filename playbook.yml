@@ -54,7 +54,7 @@
 
     - name: Configure Nagios
       shell: "cd /tmp/nagios-4.4.6 && ./configure --with-httpd-conf=/etc/apache2/sites-available"
-      shell: "cd /tmp/nagioscore-nagios-4.4.14/
+      shell: "cd /tmp/nagioscore-nagios-4.4.14/"
       shell: "sudo ./configure --with-httpd-conf=/etc/apache2/sites-enabled"
       shell: "make all"
       shell: "make install-groups-users"
