@@ -53,6 +53,7 @@
 
 
     - name: Configure Nagios
+      shell: "mkdir -p /usr/local/nagios/etc/servers"
       shell: "cd /tmp/nagios-4.4.6 && ./configure --with-httpd-conf=/etc/apache2/sites-available"
       shell: "cd /tmp/nagioscore-nagios-4.4.14/"
       shell: "sudo ./configure --with-httpd-conf=/etc/apache2/sites-enabled"
