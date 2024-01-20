@@ -262,15 +262,15 @@
    - name: Harden Apache server
      template:
        src: apache_hardening.conf.j2
-       dest: /etc/apache2/conf-available/hardening.conf
+       dest: /etc/apache2/httpd.conf
+       
+   - name: Enable Apache hardening configuration
+     command: a2enconf hardening 
      
    - name: Restart Apache
      service:
        name: apache2
        state: restarted
-
-   - name: Enable Apache hardening configuration
-     command: a2enconf hardening
 
 - name: Configure Docker server
   hosts: 10.12.0.11
