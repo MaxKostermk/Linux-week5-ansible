@@ -1,0 +1,144 @@
+---
+- hosts: localhost
+  become: true
+  vars:
+    new_server_name: WP_server
+    new_server_name2: Docker_server
+    new_server_address: 10.12.0.10
+    new_server_address2: 10.12.0.11
+
+  tasks:
+    - name: Install packages
+      apt: name: "{{ item }}"
+      state: latest 
+      update_cache: true
+      loop: 
+        - wget
+        - build-essential
+        - apache2
+        - php
+        - openssl
+        - perl
+        - make
+        - php-gd
+        - libgd-dev
+        - libapache2-mod-php
+        - libperl-dev
+        - libssl-dev
+        - daemon
+        - autoconf
+        - libc6-dev
+        - libmcrypt-dev
+        - libssl-dev
+        - libnet-snmp-perl
+        - gettext
+        - unzip
+
+    - name: Download Nagios core
+      get_url:
+        url: "https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.6.tar.gz" 
+        dest: "/tmp/nagios.tar.gz"
+
+    - name: Extract Nagios core
+      ansible.builtin.unarchive:
+        src: "/tmp/nagios.tar.gz"
+        dest: "/tmp/"
+
+    - name: Configure Nagios
+      ansible.builtin.shell:
+        cmd: "cd /tmp/nagios-4.4.6 && ./configure --with-httpd-conf=/etc/apache2/sites-available"
+
+    - name: Add new server to nagios configuration
+      blockinfile:
+        path: /usr/local/nagios/etc/servers/client.cfg
+        block: | 
+          define host {
+            use linux-server
+            host_name {{ new_server_name }}
+            address {{ new_server_address }}
+            register 1
+            hostgroups group_hosts
+          }
+          define host {
+            use linux-server
+            host_name {{ new_server_name2 }}
+            address {{ new_server_address2 }}
+            register 1 
+            hostgroups group_hosts
+          }
+          define service {
+            use local-service; Name of service template to use
+            host_name {{ new_server_name }}, {{ new_server_name2 }}
+            service_description Root Partition
+            check_command check_local_disk!20%!10%!
+          }
+          define service {
+            use local-service; Name of service template to use 
+            host_name {{ new_server_name }}, {{ new_server_name2 }}
+            service_description Current Users
+            check_command check_local_users!20!50
+          }
+          define service { 
+            use local-service; Name of service template to use 
+            host_name {{ new_server_name }}, {{ new_server_name2 }}
+            service_description Total Processes
+            check_command check_local_procs!250!400!RSZDT
+          }
+          define service { 
+            use local-service; Name of service template to use 
+            host_name {{ new_server_name }}, {{ new_server_name2 }}
+            service_description Check Load
+            check_command check_local_load!5.0,4.0,3.0!10.0,6.0,4.0
+          }
+          define service {
+           use local-service; Name of service template to use
+           host_name {{ new_server_name }}, {{ new_server_name2 }}
+           service_description Swap Usage
+           check_command check_local_swap!20%!10%
+          }
+          define service {
+           use local-service; Name of service template to use 
+           host_name {{ new_server_name }}, {{ new_server_name2 }}
+           service_description SSH
+           check_command check_ssh
+           notifications_enabled 0
+          }
+          define service { 
+           use local-service; Name of service template to use
+           host_name {{ new_server_name }}, {{ new_server_name2 }} 
+           service_description HTTP
+           check_command check_http
+           notifications_enabled 0
+          }
+        backup: yes
+
+    - name: Restart Nagios service
+      service:
+        name: nagios
+        state: restarted
+
+  
+  name: Hosts config
+  hosts: group_hosts
+  become: true
+  tasks: 
+       
+    - name: Install packages
+      apt: 
+        name: "{{ item }}"
+        update_cache: yes
+        state: present
+      loop:
+        - 'nagios-nrpe-server'
+        - 'nagios-plugins'
+      tags: [ 'setup' ]
+
+   - name: configure NRPE
+    template:
+      src: nrpe.cfg.j2
+      dest: /etc/nagios/nrpe.cfg
+
+   - name: Restart Nagios nrpe
+     service:
+       name: nagios-nrpe-server
+       state: restarted
