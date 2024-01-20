@@ -212,6 +212,11 @@
       6337366136643631660a356131333165623133393932313239396338323736626534356135653138
       3163
 # use --ask-vault-pass because of this
+  roles: 
+    - server
+    - php
+    - mysql
+    - wordpress
   tasks:
     - name: Install packages
       apt: 
@@ -235,12 +240,6 @@
         - libffi-dev 
         - python3-dev
       tags: [ 'setup' ]
- 
-  roles: 
-    - server
-    - php
-    - mysql
-    - wordpress
 
     - name: Harden Apache server
       template:
