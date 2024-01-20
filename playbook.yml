@@ -228,7 +228,11 @@
         - php-curl
         - php-xml
         - unzip
+        - python3-pip
       tags: [ 'setup' ]
+
+    - name: install mysql python
+      shell: "pip install mysql"
      
     - name: Configure MySQL root password
       debconf:
